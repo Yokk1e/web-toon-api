@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 
+@Global()
 @Module({})
 export class ManagedEntitiesModule {}
