@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { UsersModule } from './users/users.module';
 import { ManagedEntitiesModule } from './managed-entities/managed-entities.module';
+import { AuthsModule } from './auths/auths.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { ManagedEntitiesModule } from './managed-entities/managed-entities.modul
     ConfigModule.forRoot(),
     ManagedEntitiesModule,
     UsersModule,
+    AuthsModule,
   ],
 })
 export class AppModule {}
