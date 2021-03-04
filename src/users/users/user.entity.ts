@@ -1,6 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
+import { Role } from '../roles/role.entity';
 import { ManagedEntity } from '../../managed-entities/managed-entities/managed-entity';
 
 @Entity()
@@ -14,4 +15,10 @@ export class User extends ManagedEntity {
 
   @Column({ length: 255 })
   userName: string;
+
+  @ManyToOne(
+    type => Role,
+    role => role.users,
+  )
+  role: Role;
 }
