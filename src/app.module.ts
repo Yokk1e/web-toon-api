@@ -11,6 +11,7 @@ import { ItemsService } from './items/items/items.service';
 import { ItemsController } from './items/items/items.controller';
 import { ItemsModule } from './items/items.module';
 import { LineGatewaysModule } from './line-gateways/line-gateways.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { LineGatewaysModule } from './line-gateways/line-gateways.module';
     ShopsModule,
     ItemsModule,
     LineGatewaysModule,
+    NotificationsModule,
   ],
   providers: [ItemsService],
   controllers: [ItemsController],
