@@ -36,6 +36,7 @@ lerna-debug.log*
 # devtools
 devtools/db/mariadb
 devtools/db/phpmyadmin
+devtools/redis/redis
 
 # env
 .env

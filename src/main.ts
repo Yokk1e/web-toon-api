@@ -11,6 +11,7 @@ async function bootstrap() {
   const port = configService.get('NEST_PORT') || 3000;
 
   const options = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Webtoon API')
     .setVersion('1.0')
     .addTag('Webtoon')
@@ -23,7 +24,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  
+
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api-docs', app, document);
 
