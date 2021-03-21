@@ -24,6 +24,7 @@
     "seed:reset": "ts-node ./node_modules/typeorm/cli.js schema:drop && ts-node ./node_modules/typeorm/cli.js schema:sync && ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "dependencies": {
+    "@line/bot-sdk": "^7.2.0",
     "@nestjs/common": "^7.0.0",
     "@nestjs/config": "^0.6.1",
     "@nestjs/core": "^7.0.0",
