@@ -10,6 +10,7 @@ import { ShopsModule } from './shops/shops.module';
 import { ItemsService } from './items/items/items.service';
 import { ItemsController } from './items/items/items.controller';
 import { ItemsModule } from './items/items.module';
+import { LineGatewaysModule } from './line-gateways/line-gateways.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ItemsModule } from './items/items.module';
     ContentsModule,
     ShopsModule,
     ItemsModule,
+    LineGatewaysModule,
   ],
   providers: [ItemsService],
   controllers: [ItemsController],
