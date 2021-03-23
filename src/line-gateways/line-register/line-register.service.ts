@@ -34,9 +34,13 @@ export class LineRegisterService {
         userId,
       };
 
-      this.notificationsQueue.add('notifyShopRegister', notification);
+      this.notificationsQueue.add('notifyLineRegister', notification);
     }
 
     return this.lineRegisterRepository.save({ userId });
+  }
+
+  async findAll(): Promise<LineRegister[]> {
+    return this.lineRegisterRepository.find({ where: { active: true } });
   }
 }

@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
+import { LineRegister } from '../line-gateways/line-register/line-register.entity';
 import { NotificationsProcessor } from './notifications/notifications.processor';
+import { LineRegisterService } from '../line-gateways/line-register/line-register.service';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([LineRegister]),
     BullModule.registerQueueAsync({
       name: 'notifications',
       imports: [ConfigModule],
@@ -19,6 +23,6 @@ import { NotificationsProcessor } from './notifications/notifications.processor'
       inject: [ConfigService],
     }),
   ],
-  providers: [NotificationsProcessor],
+  providers: [NotificationsProcessor, LineRegisterService],
 })
 export class NotificationsModule {}
