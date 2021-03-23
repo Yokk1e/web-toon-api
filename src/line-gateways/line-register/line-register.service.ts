@@ -39,4 +39,8 @@ export class LineRegisterService {
 
     return this.lineRegisterRepository.save({ userId });
   }
+
+  async findAll(): Promise<LineRegister[]> {
+    return this.lineRegisterRepository.find({ where: { active: true } });
+  }
 }
