@@ -36,6 +36,21 @@ export class NotificationsProcessor {
     return await this.lineGatewaysService.pushMessage(userId, message);
   }
 
+  @Process('notifyLineRegister')
+  async notifyLineRegister(job: Job<LineRegisterNotification>) {
+    const { serviceProvider, type, success, userId } = job.data;
+
+    if (type === NotificationType.LINE_REGISTER) {
+      if (serviceProvider === NotificationServiceProvider.LINE) {
+        const message = success
+          ? `Register สำเร็จ`
+          : `ได้มีการ Register ไปแล้ว`;
+
+        await this.pushMessage(userId, message);
+      }
+    }
+  }
+
   @Process('notifyShopRegister')
   async notifyShopRegister(job: Job<LineRegisterNotification>) {
     const { serviceProvider, type, success, userId } = job.data;
