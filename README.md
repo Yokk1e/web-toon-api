@@ -1,5 +1,5 @@
 # Web Toon API
-  this project aims to learn nestjs, tools and other tech stack by making web toon api 
+  this project purpose to learn nestjs, tools and other tech stack by making web toon api 
 
 ## Feature
   - Auth Login jwt
