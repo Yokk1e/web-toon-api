@@ -71,9 +71,8 @@ export class ContentsService {
 
     content.deletedBy = user.userId;
     content.deletedUser = user.userName;
-    content.softDelete();
 
-    return this.contentRepository.save(content);
+    return this.contentRepository.softDelete(content);
   }
 
   private notificationUpdateContent(

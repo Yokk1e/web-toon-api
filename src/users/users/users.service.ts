@@ -38,7 +38,7 @@ export class UsersService {
 
   findByEmail(email: string): Promise<User | undefined> {
     return this.userRepository.findOne({
-      where: { active: true, email },
+      where: { email },
       relations: ['role', 'role.permissions'],
     });
   }
@@ -48,7 +48,6 @@ export class UsersService {
     options: IPaginationOptions,
   ): Promise<Pagination<User>> {
     const users = this.userRepository.createQueryBuilder('user');
-    users.where('user.active = :active', query.toWhereClause());
     users.orderBy(`user.${query.key}`, query.orderType);
 
     if (query.search) {
@@ -64,29 +63,19 @@ export class UsersService {
 
   async findOne(id: number, query: UserQueryDto): Promise<User> {
     return this.userRepository.findOneOrFail(id, {
-      where: query.toWhereClause(),
       relations: ['role'],
     });
   }
 
   async updateOne(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOneOrFail(id, {
-      where: { active: true },
-    });
+    const user = await this.userRepository.findOneOrFail(id);
 
-    const role = await this.roleRepository.findOneOrFail(updateUserDto.role, {
-      where: { active: true },
-    });
+    const role = await this.roleRepository.findOneOrFail(updateUserDto.role);
 
     return this.userRepository.save({ ...user, role });
   }
 
   async deleteOne(id: number) {
-    const user = await this.userRepository.findOneOrFail(id, {
-      where: { active: true },
-    });
-    user.softDelete();
-
-    return this.userRepository.save(user);
+    return this.userRepository.softDelete(id);
   }
 }
