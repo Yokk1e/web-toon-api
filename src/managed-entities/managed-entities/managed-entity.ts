@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import * as moment from 'moment';
 
@@ -22,17 +23,7 @@ export class ManagedEntity {
 
   // ------------------------------ SoftDelete ------------------------------
 
-  @Column({
-    type: 'boolean',
-    default: true,
-  })
-  active: boolean;
-
-  @Column({
-    type: 'datetime',
-    precision: 6,
-    nullable: true,
-  })
+  @DeleteDateColumn()
   deletedDate: Date;
 
   // ------------------------------ Log ------------------------------
@@ -75,18 +66,4 @@ export class ManagedEntity {
     default: null,
   })
   deletedUser: string;
-
-  public softDelete() {
-    if (this.active) {
-      this.active = false;
-      this.deletedDate = moment().add(7, 'hours').toDate();
-    }
-  }
-
-  public restore() {
-    if (!this.active) {
-      this.active = true;
-      this.deletedDate = null;
-    }
-  }
 }
