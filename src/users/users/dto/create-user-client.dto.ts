@@ -7,9 +7,10 @@ import {
   IsEnum,
   IsEmail,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateUserDto {
+export class CreateUserClientDto {
   @IsNotEmpty()
   @IsEmail({}, { message: 'Email is invalide' })
   @ApiProperty()
@@ -27,9 +28,4 @@ export class CreateUserDto {
   @Length(1, 255)
   @ApiProperty()
   readonly userName: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @ApiProperty()
-  readonly role: number;
 }
