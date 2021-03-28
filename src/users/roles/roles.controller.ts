@@ -13,13 +13,15 @@ import {
     Patch,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../auths/jwts/jwt-auth.guard';
 import { RolesService } from './roles.service';
-
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleQueryDto } from './dto/role-query.dto';
 
 @ApiTags('roles')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('roles')
 export class RolesController {
 constructor(private readonly rolesService: RolesService) {}
