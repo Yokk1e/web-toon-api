@@ -59,9 +59,6 @@ export class RolesService {
   }
 
   async deleteOne(id: number) {
-    const user = await this.roleRepository.findOneOrFail(id);
-    user.softDelete();
-
-    return this.roleRepository.save(user);
+    return this.roleRepository.softDelete(id);
   }
 }
