@@ -12,6 +12,13 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get('NEST_PORT') || 3000;
 
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  });
+  
   Sentry.init({
     dsn: process.env.SENTRY_DSN_URL,
   });
