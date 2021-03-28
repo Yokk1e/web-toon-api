@@ -34,7 +34,6 @@ export class RolesService {
     options: IPaginationOptions,
   ): Promise<Pagination<Role>> {
     const roles = this.roleRepository.createQueryBuilder('role');
-    roles.where('role.active = :active', query.toWhereClause());
     roles.orderBy(`role.${query.key}`, query.orderType);
 
     if (query.search) {
@@ -60,9 +59,7 @@ export class RolesService {
   }
 
   async deleteOne(id: number) {
-    const user = await this.roleRepository.findOneOrFail(id, {
-      where: { active: true },
-    });
+    const user = await this.roleRepository.findOneOrFail(id);
     user.softDelete();
 
     return this.roleRepository.save(user);
