@@ -23,7 +23,7 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -36,9 +36,13 @@ export class UsersService {
     return this.userRepository.save({ ...createUserDto, password, role });
   }
 
-  async createByClient(createUserClientDto: CreateUserClientDto): Promise<User> {
+  async createByClient(
+    createUserClientDto: CreateUserClientDto,
+  ): Promise<User> {
     await this.isEmailExists(createUserClientDto.email);
-    const role = await this.isRoleExists(+this.configService.get('DEFAULT_ROLE_ID'));
+    const role = await this.isRoleExists(
+      +this.configService.get('DEFAULT_ROLE_ID'),
+    );
 
     const salt = await genSalt(+this.configService.get('SALT_ROUND'));
     const password = await hash(createUserClientDto.password, salt);
@@ -81,7 +85,7 @@ export class UsersService {
     users.orderBy(`user.${query.key}`, query.orderType);
 
     if (query.search) {
-      users.andWhere('user.name like :search', {
+      users.where('user.userName like :search', {
         search: `%${query.search}%`,
       });
     }

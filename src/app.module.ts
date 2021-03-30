@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
 import { UsersModule } from './users/users.module';
-import { ManagedEntitiesModule } from './managed-entities/managed-entities.module';
 import { AuthsModule } from './auths/auths.module';
 import { ContentsModule } from './contents/contents.module';
 import { ShopsModule } from './shops/shops.module';
@@ -16,7 +15,6 @@ import { SentriesModule } from './sentries/sentries.module';
   imports: [
     TypeOrmModule.forRoot(),
     ConfigModule.forRoot(),
-    ManagedEntitiesModule,
     UsersModule,
     AuthsModule,
     ContentsModule,
