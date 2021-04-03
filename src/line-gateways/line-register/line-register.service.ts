@@ -41,6 +41,6 @@ export class LineRegisterService {
   }
 
   async findAll(): Promise<LineRegister[]> {
-    return this.lineRegisterRepository.find({ where: { active: true } });
+    return this.lineRegisterRepository.find();
   }
 }

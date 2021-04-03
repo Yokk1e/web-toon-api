@@ -9,22 +9,16 @@ export enum OrderType {
 
 export class ManagedQueryDto {
   @IsOptional()
-  @IsBoolean()
-  @Type(() => Boolean)
-  @ApiPropertyOptional()
-  readonly deleted: boolean;
-
-  @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   @Min(1)
-  @Transform(value => Number(value))
   @ApiPropertyOptional({ type: Number })
   readonly page: number = 1;
 
   @IsOptional()
+  @Type(() => Number)
   @IsNumber()
   @Min(1)
-  @Transform(value => Number(value))
   @ApiPropertyOptional({ type: Number })
   readonly limit: number = 10;
 
@@ -44,10 +38,6 @@ export class ManagedQueryDto {
   @IsOptional()
   @ApiPropertyOptional()
   readonly search: string;
-
-  public toWhereClause(): any {
-    return this.deleted ? {} : { active: true };
-  }
 
   public orderBy(): any {
     return { [this.key]: this.orderType };

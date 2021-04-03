@@ -17,6 +17,7 @@ import { JwtAuthGuard } from '../../auths/jwts/jwt-auth.guard';
 import { UsersService } from './users.service';
 
 import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserClientDto } from './dto/create-user-client.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserQueryDto } from './dto/user-query.dto';
 
@@ -31,6 +32,10 @@ export class UsersController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+  @Post('/client')
+  createByClient(@Body() createUserClientDto: CreateUserClientDto) {
+    return this.usersService.createByClient(createUserClientDto);
   }
 
   @Get()
