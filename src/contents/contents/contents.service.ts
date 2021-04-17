@@ -46,18 +46,14 @@ export class ContentsService {
   }
 
   async findOne(contentId: number) {
-    return this.contentRepository.findOneOrFail(contentId, {
-      where: { active: true },
-    });
+    return this.contentRepository.findOneOrFail(contentId);
   }
 
   async updateOne(
     contentId: number,
     updateContentDto: UpdateContentDto,
   ): Promise<Content> {
-    const content = await this.contentRepository.findOneOrFail(contentId, {
-      where: { active: true },
-    });
+    const content = await this.contentRepository.findOneOrFail(contentId);
 
     this.notificationUpdateContent(content.name, updateContentDto.episodes);
 
@@ -65,9 +61,7 @@ export class ContentsService {
   }
 
   async deleteOne(contentId: number, user: JwtUser) {
-    const content = await this.contentRepository.findOneOrFail(contentId, {
-      where: { active: true },
-    });
+    const content = await this.contentRepository.findOneOrFail(contentId);
 
     content.deletedBy = user.userId;
     content.deletedUser = user.userName;
