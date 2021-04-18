@@ -10,6 +10,7 @@ import { ItemsModule } from './items/items.module';
 import { LineGatewaysModule } from './line-gateways/line-gateways.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SentriesModule } from './sentries/sentries.module';
+import { CatagoriesModule } from './catagories/catagories.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { SentriesModule } from './sentries/sentries.module';
     LineGatewaysModule,
     NotificationsModule,
     SentriesModule,
+    CatagoriesModule,
   ],
 })
 export class AppModule {}
