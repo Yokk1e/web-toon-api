@@ -1,12 +1,14 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import {
   IPaginationOptions,
   Pagination,
   paginate,
 } from 'nestjs-typeorm-paginate';
 import { Role } from '../roles/role.entity';
+import { User } from '../users/user.entity';
+import { Permission } from '../permissions/permission.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleQueryDto } from './dto/role-query.dto';
@@ -16,6 +18,9 @@ export class RolesService {
   constructor(
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Permission)
+    private readonly permissionRepository: Repository<Permission>,
   ) {}
 
   async create(createRoleDto: CreateRoleDto): Promise<Role> {
@@ -23,10 +28,14 @@ export class RolesService {
       where: { name: createRoleDto.name },
     });
 
+    const permissions = await this.permissionRepository.find({
+      where: { id: In(createRoleDto.permissions) },
+    });
+
     if (oldRole)
       throw new HttpException('Role is already exist', HttpStatus.BAD_REQUEST);
 
-    return this.roleRepository.save({ ...createRoleDto });
+    return this.roleRepository.save({ ...createRoleDto, permissions });
   }
 
   findAll(
@@ -65,6 +74,18 @@ export class RolesService {
   }
 
   async deleteOne(id: number) {
+    const role = await this.roleRepository.findOneOrFail(id);
+
+    const user = await this.userRepository.count({
+      where: { role: role.id },
+    });
+
+    if (user)
+      throw new HttpException(
+        'still have user using this role',
+        HttpStatus.BAD_REQUEST,
+      );
+
     return this.roleRepository.softDelete(id);
   }
 }
