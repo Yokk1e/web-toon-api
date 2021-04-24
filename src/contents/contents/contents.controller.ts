@@ -7,12 +7,17 @@ import {
   UseInterceptors,
   Get,
   Header,
+  HttpException,
+  HttpStatus,
   Param,
   Delete,
   Patch,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
+import { editFileName } from '../../helper/image-filename.helper';
 
 import { GetJwtUser } from '../../auths/jwts/decorator/get-jwt-user.decorator';
 import { JwtAuthGuard } from '../../auths/jwts/jwt-auth.guard';
@@ -30,14 +35,27 @@ export class ContentsController {
   constructor(private readonly contentsService: ContentsService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: editFileName,
+      }),
+    }),
+  )
   create(
-    @UploadedFile() file,
     @Body() createContentDto: CreateContentDto,
+    @UploadedFile() image: any,
     @GetJwtUser() user: JwtUser,
   ) {
+    if (!image) {
+      throw new HttpException('No image input', HttpStatus.BAD_REQUEST);
+    }
+    const { filename } = image;
     createContentDto.logUserCreate(user.userId, user.userName);
-    return this.contentsService.create(createContentDto);
+
+    return this.contentsService.create(createContentDto, filename);
   }
 
   @Get(':id')
