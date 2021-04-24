@@ -26,7 +26,10 @@ export class ContentsService {
     @InjectQueue('notifications') private readonly notificationsQueue: Queue,
   ) {}
 
-  async create(createContentDto: CreateContentDto): Promise<Content> {
+  async create(
+    createContentDto: CreateContentDto,
+    fileName: string,
+  ): Promise<Content> {
     const content = await this.contentRepository.findOne({
       where: {
         name: createContentDto.name,
@@ -42,7 +45,10 @@ export class ContentsService {
       createContentDto.episodes,
     );
 
-    return this.contentRepository.save({ ...createContentDto });
+    return this.contentRepository.save({
+      ...createContentDto,
+      imageFilename: fileName,
+    });
   }
 
   async findOne(contentId: number) {
