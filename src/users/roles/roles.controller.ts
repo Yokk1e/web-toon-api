@@ -1,16 +1,16 @@
 import {
-    Controller,
-    UseGuards,
-    Post,
-    Body,
-    Get,
-    Header,
-    Query,
-    UseInterceptors,
-    ClassSerializerInterceptor,
-    Delete,
-    Param,
-    Patch,
+  Controller,
+  UseGuards,
+  Post,
+  Body,
+  Get,
+  Header,
+  Query,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Delete,
+  Param,
+  Patch,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../auths/jwts/jwt-auth.guard';
@@ -24,7 +24,7 @@ import { RoleQueryDto } from './dto/role-query.dto';
 @UseGuards(JwtAuthGuard)
 @Controller('roles')
 export class RolesController {
-constructor(private readonly rolesService: RolesService) {}
+  constructor(private readonly rolesService: RolesService) {}
 
   @Post()
   create(@Body() createRoleDto: CreateRoleDto) {
@@ -39,8 +39,14 @@ constructor(private readonly rolesService: RolesService) {}
     return this.rolesService.findAll(query, options);
   }
 
+  @Get(':id')
+  @Header('Cache-Control', 'no-cache, no-store')
+  findOne(@Param('id') id: number) {
+    return this.rolesService.findOne(id);
+  }
+
   @Patch(':id')
-  updateOne(@Param('id') id: number,@Body() updateRoleDto: UpdateRoleDto) {
+  updateOne(@Param('id') id: number, @Body() updateRoleDto: UpdateRoleDto) {
     return this.rolesService.updateOne(id, updateRoleDto);
   }
 
@@ -48,5 +54,4 @@ constructor(private readonly rolesService: RolesService) {}
   deleteOne(@Param('id') id: number) {
     return this.rolesService.deleteOne(id);
   }
-
 }
