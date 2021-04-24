@@ -61,6 +61,8 @@ export class RolesService {
   }
 
   async updateOne(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
+    const { permissions, ...data } = updateRoleDto;
+
     const oldRole = await this.roleRepository.findOne({
       where: { name: updateRoleDto.name },
     });
@@ -70,7 +72,15 @@ export class RolesService {
 
     const role = await this.roleRepository.findOneOrFail(id);
 
-    return this.roleRepository.save({ ...role, ...updateRoleDto });
+    const _permissions = await this.permissionRepository.find({
+      where: { id: In(updateRoleDto.permissions) },
+    });
+
+    return this.roleRepository.save({
+      ...role,
+      permissions: _permissions,
+      ...data,
+    });
   }
 
   async deleteOne(id: number) {
