@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { Repository, In, Not } from 'typeorm';
 import {
   IPaginationOptions,
   Pagination,
@@ -64,7 +64,7 @@ export class RolesService {
     const { permissions, ...data } = updateRoleDto;
 
     const oldRole = await this.roleRepository.findOne({
-      where: { name: updateRoleDto.name },
+      where: { name: updateRoleDto.name, id: Not(id) },
     });
 
     if (oldRole)
