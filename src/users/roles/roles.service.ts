@@ -45,6 +45,12 @@ export class RolesService {
     return paginate<Role>(roles, options);
   }
 
+  async findOne(id: number): Promise<Role> {
+    return this.roleRepository.findOneOrFail(id, {
+      relations: ['permissions'],
+    });
+  }
+
   async updateOne(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
     const oldRole = await this.roleRepository.findOne({
       where: { name: updateRoleDto.name },
