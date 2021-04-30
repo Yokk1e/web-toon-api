@@ -11,6 +11,7 @@ import {
   HttpStatus,
   Param,
   Delete,
+  Query,
   Patch,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
@@ -26,6 +27,7 @@ import { JwtUser } from '../../auths/jwts/jwt.strategy';
 import { ContentsService } from './contents.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
+import { ContentQueryDto } from './dto/content-query.dto';
 
 @ApiTags('contents')
 @ApiBearerAuth()
@@ -56,6 +58,14 @@ export class ContentsController {
     createContentDto.logUserCreate(user.userId, user.userName);
 
     return this.contentsService.create(createContentDto, filename);
+  }
+
+  @Get()
+  @Header('Cache-Control', 'no-cache, no-store')
+  findAll(@Query() query: ContentQueryDto) {
+    const options = { limit: query.limit, page: query.page };
+
+    return this.contentsService.findAll(query, options);
   }
 
   @Get(':id')
