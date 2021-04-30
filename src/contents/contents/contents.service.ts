@@ -22,6 +22,7 @@ import { UpdateContentDto } from './dto/update-content.dto';
 import { CreateEpisodeDto } from '../episodes/dto/create-episode.dto';
 import { UpdateEpisodeDto } from '../episodes/dto/update-episode.dto';
 import { ContentQueryDto } from './dto/content-query.dto';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Injectable()
 export class ContentsService {
@@ -93,7 +94,7 @@ export class ContentsService {
     content.deletedBy = user.userId;
     content.deletedUser = user.userName;
 
-    return this.contentRepository.softDelete(content);
+    return this.contentRepository.softRemove(content);
   }
 
   private notificationUpdateContent(
