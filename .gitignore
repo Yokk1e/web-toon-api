@@ -40,3 +40,6 @@ devtools/redis/redis
 
 # env
 .env
+
+#assets
+assets/uploads/*
