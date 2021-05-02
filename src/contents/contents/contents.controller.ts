@@ -41,7 +41,7 @@ export class ContentsController {
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './assets/uploads',
         filename: editFileName,
       }),
     }),
