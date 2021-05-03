@@ -75,13 +75,29 @@ export class ContentsController {
   }
 
   @Patch(':id')
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './assets/uploads',
+        filename: editFileName,
+      }),
+    }),
+  )
   updateOne(
     @Param('id') id: number,
+    @UploadedFile() image: any,
     @Body() updateContentDto: UpdateContentDto,
     @GetJwtUser() user: JwtUser,
   ) {
+    let imageFilename = ""
+    if(image){
+      const { filename } = image;
+      imageFilename = filename
+    }
+    
     updateContentDto.logUserUpdate(user.userId, user.userName);
-    return this.contentsService.updateOne(id, updateContentDto);
+    return this.contentsService.updateOne(id, updateContentDto, imageFilename);
   }
 
   @Delete(':id')

@@ -5,7 +5,7 @@ import {
   ValidateNested,
   IsOptional,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type, Transform, plainToClass } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { ManagedLogDto } from 'src/managed-entities/managed-entities/dto/managed-log.dto';
@@ -23,6 +23,10 @@ export class UpdateContentDto extends ManagedLogDto {
   readonly description: string;
 
   @IsOptional()
+  @Transform(
+    episodes => plainToClass(UpdateEpisodeDto, JSON.parse(episodes.value)),
+    { toClassOnly: true },
+  )
   @ValidateNested({ each: true })
   @Type(() => UpdateEpisodeDto)
   @ApiPropertyOptional({ type: [UpdateEpisodeDto] })

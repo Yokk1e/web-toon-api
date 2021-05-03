@@ -10,7 +10,6 @@ import {
 } from 'nestjs-typeorm-paginate';
 import { JwtUser } from '../../auths/jwts/jwt.strategy';
 import { Content } from './content.entity';
-import { Episode } from '../episodes/episode.entity';
 import {
   NotificationServiceProvider,
   NotificationType,
@@ -80,12 +79,17 @@ export class ContentsService {
   async updateOne(
     contentId: number,
     updateContentDto: UpdateContentDto,
+    fileName: string,
   ): Promise<Content> {
     const content = await this.contentRepository.findOneOrFail(contentId);
 
     this.notificationUpdateContent(content.name, updateContentDto.episodes);
 
-    return this.contentRepository.save({ ...content, ...updateContentDto });
+    return this.contentRepository.save({
+      ...content,
+      ...updateContentDto,
+      imageFilename: fileName ? fileName : content.imageFilename,
+    });
   }
 
   async deleteOne(contentId: number, user: JwtUser) {
