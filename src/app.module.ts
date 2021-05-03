@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { AuthsModule } from './auths/auths.module';
 import { ContentsModule } from './contents/contents.module';
@@ -16,6 +17,10 @@ import { CatagoriesModule } from './catagories/catagories.module';
   imports: [
     TypeOrmModule.forRoot(),
     ConfigModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', `${process.env.ASSET_PATH}`),
+      serveRoot: `/${process.env.ASSET_PATH}`,
+    }),
     UsersModule,
     AuthsModule,
     ContentsModule,

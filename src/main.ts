@@ -5,7 +5,6 @@ import { ConfigService } from '@nestjs/config';
 import * as Sentry from '@sentry/node';
 import { AppModule } from './app.module';
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -18,7 +17,7 @@ async function bootstrap() {
     preflightContinue: false,
     optionsSuccessStatus: 204,
   });
-  
+
   Sentry.init({
     dsn: process.env.SENTRY_DSN_URL,
   });

@@ -13,7 +13,7 @@ export class Episode extends ManagedEntity {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', default: null, nullable: true })
   link: string;
 
   @ManyToOne(
